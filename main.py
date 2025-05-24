@@ -1,6 +1,7 @@
 from typing import Union
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from modules.db import read_data
 import uvicorn
 
 app = FastAPI(title="test")
@@ -18,12 +19,8 @@ def read_root():
 
 @app.get("/v1/send/data")
 def read_temp(temp: float, humidity: float):
-        return {"message": 
-                {
-                    "temperature": f"Temperature is an integer: {temp}",
-                    "humidity": f"Humidity is an integer: {humidity}",
-                }
-        }
+        read_data(temp, humidity)
+        return {"message": "OK"}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="192.168.1.254", port=8000, log_level="info")
